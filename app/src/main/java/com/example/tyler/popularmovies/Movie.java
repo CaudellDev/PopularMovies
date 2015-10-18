@@ -7,6 +7,9 @@ import android.os.Parcelable;
  * Created by Tyler on 9/17/2015.
  */
 public class Movie implements Parcelable {
+
+    Parcelable.Creator CREATOR;
+
     private String title;
     private String poster_url;
     private String overview;
