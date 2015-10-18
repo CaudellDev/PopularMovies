@@ -68,7 +68,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
             String title = currMovie.getString(JON_TITLE);
             float vote_average = (float) currMovie.getDouble(JON_VOTE_AVERAGE);
 
-            Movie movie = new Movie(overview, poster_path, overview, popularity, vote_average, release_date);
+            Movie movie = new Movie(title, poster_path, overview, popularity, vote_average, release_date);
             movies.add(movie);
         }
 

@@ -1,11 +1,13 @@
 package com.example.tyler.popularmovies;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
@@ -62,6 +64,12 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskCallbac
         if (mMovieAdapter == null) {
             mMovieAdapter = new MovieAdapter(getContext(), R.layout.image_item, movies);
             mGridView.setAdapter(mMovieAdapter);
+            mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Snackbar.make(view, "You have seleted " + mMovieAdapter.getItem(position).getTitle() + "!", Snackbar.LENGTH_LONG).show();
+                }
+            });
         }
         mMovieAdapter.notifyDataSetChanged();
     }

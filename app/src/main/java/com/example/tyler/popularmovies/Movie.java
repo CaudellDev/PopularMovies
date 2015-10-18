@@ -1,9 +1,12 @@
 package com.example.tyler.popularmovies;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Tyler on 9/17/2015.
  */
-public class Movie {
+public class Movie implements Parcelable {
     private String title;
     private String poster_url;
     private String overview;
@@ -70,5 +73,15 @@ public class Movie {
 
     public void setRelease_date(String release_date) {
         this.release_date = release_date;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
     }
 }
