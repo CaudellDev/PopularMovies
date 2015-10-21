@@ -5,14 +5,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:background="#ff0000"> <!-- Does fill the entire screen -->
+    android:fillViewport="true"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:background="#00ff00"> <!-- This doesn't fill the entire screen -->
+        android:layout_height="fill_parent">
 
         <fragment android:id="@+id/fragment"
             android:name="com.example.tyler.popularmovies.MainFragment"
