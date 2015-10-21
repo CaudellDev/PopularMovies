@@ -57,6 +57,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         JSONObject movieJson = new JSONObject(movieJsonStr);
         JSONArray movieArray = movieJson.getJSONArray(JON_RESULTS);
 
+        // Loop through the lines of the file and get the JSON Objects.
         ArrayList<Movie> movies = new ArrayList<>(movieArray.length());
         for (int i = 0; i < movieArray.length(); i++) {
             JSONObject currMovie = movieArray.getJSONObject(i);
@@ -99,8 +100,6 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
             URL url = new URL(builtUri.toString());
 
-            Log.d(LOG_TAG, "URI: " + builtUri.toString());
-
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
@@ -124,8 +123,6 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
             }
 
             movieJsonStr = buffer.toString();
-            Log.d(LOG_TAG, "JSON string: " + movieJsonStr);
-
             return getMovieDataFromJson(movieJsonStr);
 
         } catch (MalformedURLException e) {

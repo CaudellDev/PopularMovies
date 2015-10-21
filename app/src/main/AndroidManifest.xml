@@ -19,7 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MovieActivity"></activity>
+        <activity
+            android:name=".MovieActivity"
+            android:label="Movie Details"
+            android:parentActivityName=".MainActivity">
+
+        </activity>
     </application>
 
 </manifest>

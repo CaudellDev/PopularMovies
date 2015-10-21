@@ -60,7 +60,7 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskCallbac
     }
 
     @Override
-    public void onTaskComplete(ArrayList<Movie> movies) {
+    public void onTaskComplete(final ArrayList<Movie> movies) {
         if (mMovieAdapter == null) {
             mMovieAdapter = new MovieAdapter(getContext(), R.layout.image_item, movies);
             mGridView.setAdapter(mMovieAdapter);
@@ -68,9 +68,14 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskCallbac
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Snackbar.make(view, "You have seleted " + mMovieAdapter.getItem(position).getTitle() + "!", Snackbar.LENGTH_LONG).show();
+                    ((FragmentCallback) getActivity()).onItemClick(movies.get(position));
                 }
             });
         }
         mMovieAdapter.notifyDataSetChanged();
+    }
+
+    public interface FragmentCallback {
+        public void onItemClick(Movie movie);
     }
 }

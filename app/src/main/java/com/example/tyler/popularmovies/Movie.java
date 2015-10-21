@@ -8,7 +8,7 @@ import android.os.Parcelable;
  */
 public class Movie implements Parcelable {
 
-    Parcelable.Creator CREATOR;
+    public static final String PARCEL_TAG = "movie_tag";
 
     private String title;
     private String poster_url;
@@ -19,6 +19,15 @@ public class Movie implements Parcelable {
 
     public Movie () {
 
+    }
+
+    public Movie(Parcel in) {
+        this.title = in.readString();
+        this.poster_url = in.readString();
+        this.overview = in.readString();
+        this.popularity = in.readFloat();
+        this.vote_avg = in.readFloat();
+        this.release_date = in.readString();
     }
 
     public Movie(String title, String poster_url, String overview, float popularity, float vote_avg, String release_date) {
@@ -84,7 +93,26 @@ public class Movie implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeString(title);
+        out.writeString(poster_url);
+        out.writeString(overview);
+        out.writeFloat(popularity);
+        out.writeFloat(vote_avg);
+        out.writeString(release_date);
     }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return null;
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[0];
+        }
+
+
+    };
 }
