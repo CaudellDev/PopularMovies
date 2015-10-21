@@ -17,7 +17,6 @@
     <FrameLayout android:id="@+id/movie_detail_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="5"
-        android:background="#ff0000"/>
+        android:layout_weight="5"/>
 
 </LinearLayout>
