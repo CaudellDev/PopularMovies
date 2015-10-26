@@ -67,7 +67,6 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskCallbac
             mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Snackbar.make(view, "You have seleted " + mMovieAdapter.getItem(position).getTitle() + "!", Snackbar.LENGTH_LONG).show();
                     ((FragmentCallback) getActivity()).onItemClick(movies.get(position));
                 }
             });

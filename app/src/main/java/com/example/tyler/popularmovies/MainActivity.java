@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
         } else {
             mTwoPane = false;
         }
-
-        Log.d(LOG_TAG, "mTwoPane: " + mTwoPane);
     }
 
     @Override

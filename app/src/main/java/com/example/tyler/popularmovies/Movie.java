@@ -102,10 +102,10 @@ public class Movie implements Parcelable {
         out.writeString(release_date);
     }
 
-    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
         @Override
         public Movie createFromParcel(Parcel source) {
-            return null;
+            return new Movie(source);
         }
 
         @Override
