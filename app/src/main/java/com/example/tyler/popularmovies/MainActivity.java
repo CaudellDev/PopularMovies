@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -22,9 +21,11 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // If the layout is using sw600dp, it'll have R.id.movie_detail_container.
         if (findViewById(R.id.movie_detail_container) != null) {
             mTwoPane = true;
 
+            // If savedInstanceState is not null, let Android restore the Fragment.
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.movie_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
 
     @Override
     public void onItemClick(Movie movie) {
+        // MainFragment can't decide how to handle different
+        // screen sizes, so let MainActivity to that for us.
         if (mTwoPane) {
             Bundle args = new Bundle();
             args.putParcelable(Movie.PARCEL_TAG, movie);
@@ -71,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
                     .replace(R.id.movie_detail_container, fragment)
                     .commit();
         } else {
-            Intent intent = new Intent(this, MovieActivity.class)
+            Intent intent = new Intent(this, DetailActivity.class)
                     .putExtra(Movie.PARCEL_TAG, movie);
             startActivity(intent);
         }

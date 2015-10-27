@@ -18,6 +18,7 @@ public class DetailFragment extends Fragment {
     private boolean mTwoPanel;
     private Movie mMovie;
 
+    // In case I have to reference these outside onCreateView, save them here.
     private ImageView posterView;
     private TextView titleView;
     private TextView yearView;
@@ -31,6 +32,8 @@ public class DetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // MainActivity and DetailActivity should add via arguments.
         if (getArguments() != null) {
             mMovie = getArguments().getParcelable(Movie.PARCEL_TAG);
         } else {

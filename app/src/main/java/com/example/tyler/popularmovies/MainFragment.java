@@ -34,8 +34,7 @@ public class MainFragment extends Fragment implements FetchMovieListTask.TaskCal
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
         mGridView = (GridView) view.findViewById(R.id.grid_movie);
-
-        updateMovies();
+        updateMovies(); // Initial fetch.
 
         return view;
     }
@@ -44,6 +43,7 @@ public class MainFragment extends Fragment implements FetchMovieListTask.TaskCal
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        // Temporary refresh button.
         if (id == R.id.action_refresh) {
             updateMovies();
         }
@@ -53,12 +53,17 @@ public class MainFragment extends Fragment implements FetchMovieListTask.TaskCal
 
     public void updateMovies() {
         FetchMovieListTask fetchMovieListTask = new FetchMovieListTask(getContext(), this);
-        fetchMovieListTask.execute("");
+
+        // TODO: Once SettingsActivity works, pull from there.
+        String sort = Utility.getSort(getContext());
+
+        fetchMovieListTask.execute(sort);
     }
 
     @Override
     public void onTaskComplete(final ArrayList<Movie> movies) {
         if (mMovieAdapter == null) {
+            // If it's null, it's the first time using it so we need to do some initializing.
             mMovieAdapter = new MovieAdapter(getContext(), R.layout.image_item, movies);
             mGridView.setAdapter(mMovieAdapter);
             mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,6 +77,6 @@ public class MainFragment extends Fragment implements FetchMovieListTask.TaskCal
     }
 
     public interface FragmentCallback {
-        public void onItemClick(Movie movie);
+        void onItemClick(Movie movie);
     }
 }

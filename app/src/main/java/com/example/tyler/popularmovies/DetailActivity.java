@@ -1,13 +1,11 @@
 package com.example.tyler.popularmovies;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
-public class MovieActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity {
 
-    private static final String LOG_TAG = MovieActivity.class.getSimpleName();
+    private static final String LOG_TAG = DetailActivity.class.getSimpleName();
 
     private DetailFragment fragment;
 
@@ -16,6 +14,7 @@ public class MovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
 
+        // Get the Movie from the intent, and send it off to the new DetailFragment.
         Bundle args = new Bundle();
         args.putParcelable(Movie.PARCEL_TAG, getIntent().getParcelableExtra(Movie.PARCEL_TAG));
 

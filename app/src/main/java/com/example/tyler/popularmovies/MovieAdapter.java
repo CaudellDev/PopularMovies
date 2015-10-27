@@ -15,9 +15,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Tyler on 10/12/2015.
- */
 public class MovieAdapter extends ArrayAdapter<Movie> {
 
     private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
@@ -36,13 +33,10 @@ public class MovieAdapter extends ArrayAdapter<Movie> {
             imageView = (ImageView) convertView;
         }
 
-        String posterUrl = getItem(position).getPoster_url();
-        Log.d(LOG_TAG, "Poster URL: " + posterUrl);
-
         Picasso.with(getContext())
                 .load(getItem(position).getPoster_url())
                 .placeholder(R.drawable.default_film)
-                .fit()
+                .fit() // Trying to get the images right up against each other.
                 .centerInside()
                 .into(imageView);
 
