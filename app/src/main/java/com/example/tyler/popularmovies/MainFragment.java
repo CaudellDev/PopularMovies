@@ -1,6 +1,5 @@
 package com.example.tyler.popularmovies;
 
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,16 +7,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment extends Fragment implements FetchMovieTask.TaskCallback {
+public class MainFragment extends Fragment implements FetchMovieListTask.TaskCallback {
 
     private MovieAdapter mMovieAdapter;
     private GridView mGridView;
@@ -55,8 +52,8 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskCallbac
     }
 
     public void updateMovies() {
-        FetchMovieTask fetchMovieTask = new FetchMovieTask(getContext(), this);
-        fetchMovieTask.execute("");
+        FetchMovieListTask fetchMovieListTask = new FetchMovieListTask(getContext(), this);
+        fetchMovieListTask.execute("");
     }
 
     @Override

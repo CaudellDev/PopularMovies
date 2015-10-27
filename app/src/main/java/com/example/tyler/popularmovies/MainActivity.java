@@ -25,8 +25,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
         if (findViewById(R.id.movie_detail_container) != null) {
             mTwoPane = true;
 
-            getSupportActionBar().setElevation(0f);
-
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.movie_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
@@ -34,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
             }
         } else {
             mTwoPane = false;
+            getSupportActionBar().setElevation(0f);
         }
     }
 
@@ -52,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

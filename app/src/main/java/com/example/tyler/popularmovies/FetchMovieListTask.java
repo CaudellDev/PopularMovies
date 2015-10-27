@@ -3,7 +3,6 @@ package com.example.tyler.popularmovies;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,9 +20,9 @@ import java.util.ArrayList;
 /**
  * Created by Tyler on 9/17/2015.
  */
-public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
+public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
-    private static final String LOG_TAG = FetchMovieTask.class.getSimpleName();
+    private static final String LOG_TAG = FetchMovieListTask.class.getSimpleName();
 
     private static final String imgXXS = "w92";
     private static final String imgXS = "w154";
@@ -36,7 +35,7 @@ public class FetchMovieTask extends AsyncTask<String, Void, ArrayList<Movie>> {
     private Context mContext;
     private TaskCallback mCallback;
 
-    public FetchMovieTask(Context context, TaskCallback callback) {
+    public FetchMovieListTask(Context context, TaskCallback callback) {
         mContext = context;
         mCallback = callback;
     }
