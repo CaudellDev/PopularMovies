@@ -3,9 +3,6 @@ package com.example.tyler.popularmovies;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by Tyler on 9/17/2015.
- */
 public class Movie implements Parcelable {
 
     // Constant String to ensure that they're all the same.

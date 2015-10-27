@@ -14,12 +14,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 
-/**
- * Created by Tyler on 9/17/2015.
- */
 public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
     private static final String LOG_TAG = FetchMovieListTask.class.getSimpleName();
@@ -73,9 +71,9 @@ public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>
     @Override
     protected ArrayList<Movie> doInBackground(String... params) {
 
-        HttpURLConnection urlConnection;
-        BufferedReader reader;
-        String movieJsonStr;
+        HttpURLConnection urlConnection = null;
+        BufferedReader reader = null;
+        String movieJsonStr = null;
 
         try {
             // Parts of the URI to retrieve the list of movies.
@@ -101,7 +99,7 @@ public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>
 
             // Get the page text in JSON format into a stream and buffer.
             InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder builder = new StringBuilder();
 
             if (inputStream == null) {
                 // Nothing to do.
@@ -112,21 +110,34 @@ public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>
 
             String line;
             while ((line = reader.readLine()) != null) {
-                buffer.append(line + "\n");
+                builder.append(line).append("\n");
             }
 
-            if (buffer.length() == 0) {
+            if (builder.length() == 0) {
                 // Stream was empty. No point in parsing.
                 return null;
             }
 
-            movieJsonStr = buffer.toString();
-            return getMovieDataFromJson(movieJsonStr);
+            movieJsonStr = builder.toString();
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        try {
+            return getMovieDataFromJson(movieJsonStr);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -2,9 +2,6 @@ package com.example.tyler.popularmovies;
 
 import android.content.Context;
 
-/**
- * Created by Tyler on 9/17/2015.
- */
 public class Utility {
 
     private static final String posterUrl = "http://image.tmdb.org/t/p/";
