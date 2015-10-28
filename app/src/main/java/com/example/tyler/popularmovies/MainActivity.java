@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -12,6 +13,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
     private boolean mTwoPane;
+    private static final int PREF_CHANGE_REQUEST = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +55,22 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
 
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, PREF_CHANGE_REQUEST);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(LOG_TAG, "onActivityResult is called. Request code: " + requestCode);
+        Log.d(LOG_TAG, "onActivityResult is called. Result code: " + resultCode);
+        if (requestCode == PREF_CHANGE_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                MainFragment fragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
+                fragment.updateMovies();
+            }
+        }
     }
 
     @Override

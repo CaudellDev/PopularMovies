@@ -2,6 +2,7 @@ package com.example.tyler.popularmovies;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +16,8 @@ import java.util.ArrayList;
  * A placeholder fragment containing a simple view.
  */
 public class MainFragment extends Fragment implements FetchMovieListTask.TaskCallback {
+
+    private static final String LOG_TAG = MainFragment.class.getSimpleName();
 
     private MovieAdapter mMovieAdapter;
     private GridView mGridView;
@@ -54,8 +57,8 @@ public class MainFragment extends Fragment implements FetchMovieListTask.TaskCal
     public void updateMovies() {
         FetchMovieListTask fetchMovieListTask = new FetchMovieListTask(getContext(), this);
 
-        // TODO: Once SettingsActivity works, pull from there.
-        String sort = Utility.getSort(getContext());
+        String sort = Utility.getPreferedSort(getContext());
+        Log.d(LOG_TAG, "Sort Preference: " + sort);
 
         fetchMovieListTask.execute(sort);
     }
@@ -72,7 +75,11 @@ public class MainFragment extends Fragment implements FetchMovieListTask.TaskCal
                     ((FragmentCallback) getActivity()).onItemClick(movies.get(position));
                 }
             });
+        } else {
+            mMovieAdapter.clear();
+            mMovieAdapter.addAll(movies);
         }
+
         mMovieAdapter.notifyDataSetChanged();
     }
 

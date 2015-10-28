@@ -3,8 +3,8 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="com.example.tyler.popularmovies.SettingsActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_info_black_24dp"
-        android:title="@string/pref_header_general" />
+        android:fragment="com.example.tyler.popularmovies.SettingsActivity$SortPreferenceFragment"
+        android:icon="@drawable/ic_sort_black_48dp"
+        android:title="@string/pref_header_sort" />
 
 </preference-headers>

@@ -3,6 +3,7 @@ package com.example.tyler.popularmovies;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -92,6 +93,7 @@ public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>
 
             // Convert to URL and attempt to connect to it.
             URL url = new URL(builtUri.toString());
+            Log.d(LOG_TAG, "URL: " + builtUri.toString());
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");

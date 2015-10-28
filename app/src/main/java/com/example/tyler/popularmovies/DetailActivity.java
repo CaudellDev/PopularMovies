@@ -2,6 +2,7 @@ package com.example.tyler.popularmovies;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -24,5 +25,11 @@ public class DetailActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.movie_detail_container, fragment)
                 .commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(LOG_TAG, "onBackPressed() is called.");
+        super.onBackPressed();
     }
 }
