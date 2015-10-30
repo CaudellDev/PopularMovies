@@ -47,7 +47,7 @@ public class DetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         posterView = (ImageView) rootView.findViewById(R.id.detail_movie_poster);
         titleView = (TextView) rootView.findViewById(R.id.detail_movie_title);
-        yearView = (TextView) rootView.findViewById(R.id.detail_movie_length);
+        yearView = (TextView) rootView.findViewById(R.id.detail_movie_year);
         overviewView = (TextView) rootView.findViewById(R.id.detail_movie_overview);
         ratingView = (TextView) rootView.findViewById(R.id.detail_movie_rating);
 
@@ -56,9 +56,9 @@ public class DetailFragment extends Fragment {
                 .into(posterView);
 
         titleView.setText(mMovie.getTitle());
-        yearView.setText(mMovie.getRelease_date());
+        yearView.setText(mMovie.getReleaseYear());
         overviewView.setText(mMovie.getOverview());
-        ratingView.setText(mMovie.getVote_avg() + "/10");
+        ratingView.setText(getString(R.string.detail_rating, mMovie.getVote_avg()));
 
         return rootView;
     }

@@ -23,7 +23,7 @@ public class Utility {
         return context.getString(R.string.api_key);
     }
 
-    public static String getPreferedSort(Context context) {
+    public static String getPreferredSort(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(context.getString(R.string.sort_pref_key), context.getString(R.string.sort_default)) + ".desc";
     }

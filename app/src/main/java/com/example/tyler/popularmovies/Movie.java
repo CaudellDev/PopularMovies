@@ -78,8 +78,8 @@ public class Movie implements Parcelable {
     }
 
     public String getReleaseYear() {
-        // Release date format is YYYY-MM-DD, so just split the year from the rest of the string.
-        return release_date.split("-", 1)[0];
+        // Release date format is YYYY-MM-DD, so just get the first four characters.
+        return release_date.substring(0, 4);
     }
 
     public void setRelease_date(String release_date) {

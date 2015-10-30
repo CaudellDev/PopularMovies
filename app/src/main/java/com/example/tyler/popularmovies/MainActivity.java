@@ -8,6 +8,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * Application Launcher Icon (res > minmap_(size) > movie_icon.png)
+ * Icon Source: DesignBolts
+ * URL: http://www.designbolts.com/2015/01/21/free-flat-long-shadow-multimedia-icons-1024-px-pngs-vector-ai-file/
+ */
+
 public class MainActivity extends AppCompatActivity implements MainFragment.FragmentCallback {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();

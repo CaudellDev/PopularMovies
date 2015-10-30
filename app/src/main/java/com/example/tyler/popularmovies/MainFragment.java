@@ -57,7 +57,7 @@ public class MainFragment extends Fragment implements FetchMovieListTask.TaskCal
     public void updateMovies() {
         FetchMovieListTask fetchMovieListTask = new FetchMovieListTask(getContext(), this);
 
-        String sort = Utility.getPreferedSort(getContext());
+        String sort = Utility.getPreferredSort(getContext());
         Log.d(LOG_TAG, "Sort Preference: " + sort);
 
         fetchMovieListTask.execute(sort);
