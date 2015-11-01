@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment extends Fragment implements FetchMovieListTask.TaskCallback {
+public class MainFragment extends Fragment implements FetchMovieListTask.ListTaskCallback {
 
     private static final String LOG_TAG = MainFragment.class.getSimpleName();
 

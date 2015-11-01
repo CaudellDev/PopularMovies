@@ -14,8 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -24,9 +22,9 @@ public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>
     private static final String LOG_TAG = FetchMovieListTask.class.getSimpleName();
 
     private Context mContext;
-    private TaskCallback mCallback;
+    private ListTaskCallback mCallback;
 
-    public FetchMovieListTask(Context context, TaskCallback callback) {
+    public FetchMovieListTask(Context context, ListTaskCallback callback) {
         mContext = context;
         mCallback = callback;
     }
@@ -34,7 +32,6 @@ public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>
     private ArrayList<Movie> getMovieDataFromJson(String movieJsonStr) throws JSONException {
 
         // Json Object Name (JON) for the name/value sets in the movie Json string.
-        final String JON_PAGE = "page";
         final String JON_RESULTS = "results";
 
         // These are the only values we care about in the JSON.
@@ -154,7 +151,7 @@ public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>
     }
 
     // After it's finished with the Task, we need to tell MainFragment it's done.
-    public interface TaskCallback {
+    public interface ListTaskCallback {
         void onTaskComplete(ArrayList<Movie> movies);
     }
 }

@@ -2,6 +2,9 @@ package com.example.tyler.popularmovies;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.StringDef;
+
+import java.util.ArrayList;
 
 public class Movie implements Parcelable {
 
@@ -14,18 +17,30 @@ public class Movie implements Parcelable {
     private String overview;
     private float vote_avg;
     private String release_date;
+    private boolean favorite;
+    private String runtime;
+
+    private ArrayList<String> trailerList;
+    private ArrayList<String> reviewList;
 
     public Movie () {
 
     }
 
     public Movie(Parcel in) {
-        this.id = in.readString();
-        this.title = in.readString();
-        this.poster_url = in.readString();
-        this.overview = in.readString();
-        this.vote_avg = in.readFloat();
-        this.release_date = in.readString();
+        id = in.readString();
+        title = in.readString();
+        poster_url = in.readString();
+        overview = in.readString();
+        vote_avg = in.readFloat();
+        release_date = in.readString();
+        favorite = in.readInt() == 0;
+
+        if (trailerList == null) trailerList = new ArrayList<>();
+        if (reviewList == null) reviewList = new ArrayList<>();
+
+        in.readStringList(trailerList);
+        in.readStringList(reviewList);
     }
 
     public Movie(String id, String title, String poster_url, String overview, float vote_avg, String release_date) {
@@ -86,6 +101,38 @@ public class Movie implements Parcelable {
         this.release_date = release_date;
     }
 
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public ArrayList<String> getTrailerList() {
+        return trailerList;
+    }
+
+    public void setTrailerList(ArrayList<String> trailerList) {
+        this.trailerList = trailerList;
+    }
+
+    public ArrayList<String> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(ArrayList<String> reviewList) {
+        this.reviewList = reviewList;
+    }
+
+    public String getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(String runtime) {
+        this.runtime = runtime;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -99,6 +146,9 @@ public class Movie implements Parcelable {
         out.writeString(overview);
         out.writeFloat(vote_avg);
         out.writeString(release_date);
+        out.writeInt(favorite ? 0 : 1);
+        out.writeStringList(trailerList);
+        out.writeStringList(reviewList);
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

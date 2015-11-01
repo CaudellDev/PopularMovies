@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements FetchMovieDetailTask.DetailTaskCallback {
 
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
 
@@ -39,6 +39,9 @@ public class DetailFragment extends Fragment {
         } else {
             Log.d(LOG_TAG, "getArguments() == null");
         }
+
+        FetchMovieDetailTask fetchTask = new FetchMovieDetailTask(getContext(), mMovie, this);
+        fetchTask.execute(mMovie.getId());
     }
 
     @Override
@@ -51,6 +54,13 @@ public class DetailFragment extends Fragment {
         overviewView = (TextView) rootView.findViewById(R.id.detail_movie_overview);
         ratingView = (TextView) rootView.findViewById(R.id.detail_movie_rating);
 
+        return rootView;
+    }
+
+    @Override
+    public void onTaskComplete(Movie movie) {
+        mMovie = movie;
+
         Picasso.with(getContext())
                 .load(mMovie.getPoster_url())
                 .into(posterView);
@@ -59,7 +69,5 @@ public class DetailFragment extends Fragment {
         yearView.setText(mMovie.getReleaseYear());
         overviewView.setText(mMovie.getOverview());
         ratingView.setText(getString(R.string.detail_rating, mMovie.getVote_avg()));
-
-        return rootView;
     }
 }
