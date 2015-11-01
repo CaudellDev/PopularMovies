@@ -20,5 +20,6 @@
     <string name="gridview_col">2</string>
 
     <string name="detail_rating"><xliff:g id="rating">%2.1f</xliff:g>\u002F10</string>
+    <string name="detail_runtime"><xliff:g id="runtime">%3.0f</xliff:g>min</string>
 
 </resources>

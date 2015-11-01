@@ -6,7 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -24,6 +26,11 @@ public class DetailFragment extends Fragment implements FetchMovieDetailTask.Det
     private TextView yearView;
     private TextView overviewView;
     private TextView ratingView;
+    private TextView runtimeView;
+    private ListView trailerList;
+    private ListView reviewList;
+    private ArrayAdapter<String> trailerAdpt;
+    private ArrayAdapter<String> reviewAdpt;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -53,14 +60,50 @@ public class DetailFragment extends Fragment implements FetchMovieDetailTask.Det
         yearView = (TextView) rootView.findViewById(R.id.detail_movie_year);
         overviewView = (TextView) rootView.findViewById(R.id.detail_movie_overview);
         ratingView = (TextView) rootView.findViewById(R.id.detail_movie_rating);
+        runtimeView = (TextView) rootView.findViewById(R.id.detail_movie_runtime);
+        trailerList = (ListView) rootView.findViewById(R.id.detail_trailer_list);
+        reviewList = (ListView) rootView.findViewById(R.id.detail_review_list);
 
         return rootView;
+    }
+
+    /**
+     * Source: http://stackoverflow.com/questions/9587754/how-to-add-two-listview-in-scrollview
+     *
+     * From what I can tell, what this function does is it expands the ListView
+     * to the height of all of it's children. That way, the ListView doesn't need
+     * to use the built-in scrolling functionality. This means that the ScrollView
+     * the ListView is contained in, will scroll for it instead.
+     *
+     * @param listView - The ListView to be expanded to the height of all of it's children.
+     */
+    public void setListViewHeightBasedOnChildren(ListView listView) {
+        ArrayAdapter listAdapter = (ArrayAdapter) listView.getAdapter();
+        if (listAdapter == null) {
+            // pre-condition
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
     }
 
     @Override
     public void onTaskComplete(Movie movie) {
         mMovie = movie;
+        updateViews();
+    }
 
+    private void updateViews() {
         Picasso.with(getContext())
                 .load(mMovie.getPoster_url())
                 .into(posterView);
@@ -69,5 +112,15 @@ public class DetailFragment extends Fragment implements FetchMovieDetailTask.Det
         yearView.setText(mMovie.getReleaseYear());
         overviewView.setText(mMovie.getOverview());
         ratingView.setText(getString(R.string.detail_rating, mMovie.getVote_avg()));
+        runtimeView.setText(mMovie.getRuntime());
+
+        trailerAdpt = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, mMovie.getTrailerList());
+        trailerList.setAdapter(trailerAdpt);
+
+        reviewAdpt = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, mMovie.getReviewList());
+        reviewList.setAdapter(reviewAdpt);
+
+        setListViewHeightBasedOnChildren(trailerList);
+        setListViewHeightBasedOnChildren(reviewList);
     }
 }

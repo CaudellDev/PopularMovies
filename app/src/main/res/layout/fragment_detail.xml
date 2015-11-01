@@ -65,6 +65,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
+                        <TextView android:id="@+id/detail_movie_runtime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
                         <TextView android:id="@+id/detail_movie_rating"
                             android:text="11/10"
                             android:textAppearance="?android:textAppearanceSmall"
@@ -80,6 +84,20 @@
                     android:layout_marginTop="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
+                <View style="@style/Separator" />
+
+                <ListView android:id="@+id/detail_trailer_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbarSize="0dp"/>
+
+                <View style="@style/Separator" />
+
+                <ListView android:id="@+id/detail_review_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbarSize="0dp"/>
 
             </LinearLayout>
 
