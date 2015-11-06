@@ -2,7 +2,9 @@ package com.example.tyler.popularmovies;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class Utility {
 
@@ -35,5 +37,29 @@ public class Utility {
 
     public static String getPosterUrl(String urlEnd) {
         return posterUrl + imgM + urlEnd;
+    }
+
+    public static String getYoutubeURL(String source) {
+        final String BASE_URL = "vnd.youtube:";
+
+        Uri uri = Uri.parse(BASE_URL).buildUpon()
+                .appendPath(source)
+                .build();
+
+        return uri.toString();
+    }
+
+    public static String getYoutubeLink(String source) {
+        final String BASE_URL = "http://www.youtube.com/watch";
+        final String VIDEO_PARAM = "v";
+
+        Uri uri = Uri.parse(BASE_URL).buildUpon()
+                .appendQueryParameter(VIDEO_PARAM, source)
+                .build();
+
+        Log.v("Utility", "source: " + source);
+        Log.v("Utility", "uri.toString(): " + uri.toString());
+
+        return uri.toString();
     }
 }

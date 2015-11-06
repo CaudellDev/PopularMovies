@@ -1,11 +1,15 @@
 package com.example.tyler.popularmovies;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -75,6 +79,8 @@ public class DetailFragment extends Fragment implements FetchMovieDetailTask.Det
      * to use the built-in scrolling functionality. This means that the ScrollView
      * the ListView is contained in, will scroll for it instead.
      *
+     * Would the header and footer implementation be better, or does this work?
+     *
      * @param listView - The ListView to be expanded to the height of all of it's children.
      */
     public void setListViewHeightBasedOnChildren(ListView listView) {
@@ -90,8 +96,9 @@ public class DetailFragment extends Fragment implements FetchMovieDetailTask.Det
             listItem.measure(0, 0);
             totalHeight += listItem.getMeasuredHeight();
             Log.d(LOG_TAG, "totalHeight: " + totalHeight);
+            Log.d(LOG_TAG, "listItem.getMeasuredHeight(): " + listItem.getMeasuredHeight());
+            Log.d(LOG_TAG, "listItem.getHeight(): " + listItem.getHeight());
         }
-        totalHeight += 500;
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
@@ -116,12 +123,27 @@ public class DetailFragment extends Fragment implements FetchMovieDetailTask.Det
         ratingView.setText(getString(R.string.detail_rating, mMovie.getVote_avg()));
         runtimeView.setText(mMovie.getRuntime());
 
-        String[] trailerArray = mMovie.getTrailerList().toArray(new String[mMovie.getTrailerList().size()]);
-        trailerAdpt = new TrailerListAdapter(getContext(), android.R.layout.activity_list_item, trailerArray);
+        final String[] trailerArray = mMovie.getTrailerList().toArray(new String[mMovie.getTrailerList().size()]);
+        trailerAdpt = new TrailerListAdapter(getContext(), R.layout.trailer_item, trailerArray);
         trailerList.setAdapter(trailerAdpt);
+        trailerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String trailer = trailerArray[position];
+                String source = Movie.convertTrailerStr(trailer)[1]; // Second part is the URI
+                String uri = Utility.getYoutubeLink(source);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Log.w(LOG_TAG, "Activity not found exception.");
+                    e.printStackTrace();
+                }
+            }
+        });
 
         String[] reviewArray = mMovie.getReviewList().toArray(new String[mMovie.getReviewList().size()]);
-        reviewAdpt = new ReviewListAdapter(getContext(), android.R.layout.simple_list_item_2, reviewArray);
+        reviewAdpt = new ReviewListAdapter(getContext(), R.layout.review_item, reviewArray);
         reviewList.setAdapter(reviewAdpt);
 
         setListViewHeightBasedOnChildren(trailerList);

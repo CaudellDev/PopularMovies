@@ -24,13 +24,13 @@ public class ReviewListAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         if (convertView == null) {
-            view = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_2, parent, false);
+            view = LayoutInflater.from(getContext()).inflate(R.layout.review_item, parent, false);
         } else {
             view = convertView;
         }
 
-        TextView title = (TextView) view.findViewById(android.R.id.text1);
-        TextView content = (TextView) view.findViewById(android.R.id.text2);
+        TextView title = (TextView) view.findViewById(R.id.text1);
+        TextView content = (TextView) view.findViewById(R.id.text2);
 
         String[] review = Movie.convertReviewStr(getItem(position));
 

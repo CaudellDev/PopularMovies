@@ -28,13 +28,13 @@ public class TrailerListAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         if (convertView == null) {
-            view = LayoutInflater.from(getContext()).inflate(android.R.layout.activity_list_item, parent, false);
+            view = LayoutInflater.from(getContext()).inflate(R.layout.trailer_item, parent, false);
         } else {
             view = convertView;
         }
 
-        ImageView icon = (ImageView) view.findViewById(android.R.id.icon);
-        TextView text = (TextView) view.findViewById(android.R.id.text1);
+        ImageView icon = (ImageView) view.findViewById(R.id.icon);
+        TextView text = (TextView) view.findViewById(R.id.text1);
 
         Picasso.with(getContext())
                 .load(R.drawable.ic_play_arrow_black_48dp)

@@ -38,19 +38,6 @@ public class FetchMovieDetailTask extends AsyncTask<String, Void, Movie> {
         mMovie = movie;
     }
 
-    private String getYoutubeURL(String source) {
-        final String BASE_URL = "http://www.youtube.com/watch";
-        final String VIDEO_PARAM = "v";
-
-        Uri uri = Uri.parse(BASE_URL).buildUpon()
-                .appendQueryParameter(VIDEO_PARAM, source)
-                .build();
-
-        Log.v(LOG_TAG, "uri.toString(): " + uri.toString());
-
-        return uri.toString();
-    }
-
     private Movie getMovieDataFromJson(String movieJsonStr) throws JSONException {
         final String JON_RUNTIME = "runtime";
 
@@ -78,7 +65,7 @@ public class FetchMovieDetailTask extends AsyncTask<String, Void, Movie> {
             JSONObject youtubeJsonObj = youtubeJsonArray.getJSONObject(i);
             String name = youtubeJsonObj.getString(JON_YT_NAME);
             String source = youtubeJsonObj.getString(JON_YT_SOURCE);
-            trailers.add(name + " - " + getYoutubeURL(source));
+            trailers.add(name + " - " + source); // The rest of the URI will be added later.
         }
 
         JSONObject reviewsJson = movieJson.getJSONObject(JON_REVIEWS);
