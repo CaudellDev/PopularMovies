@@ -117,12 +117,23 @@ public class Movie implements Parcelable {
         this.trailerList = trailerList;
     }
 
+    public static String[] convertTrailerStr(String trailer) {
+        return trailer.split("-", 2);
+    }
+
     public ArrayList<String> getReviewList() {
         return reviewList;
     }
 
     public void setReviewList(ArrayList<String> reviewList) {
         this.reviewList = reviewList;
+    }
+
+    // Reviews are stored in one string as so: author - content.
+    // That way, I don't need to make an entire class.
+    // This little utility will split it for me, saving some code.
+    public static String[] convertReviewStr(String review) {
+        return review.trim().split("-", 2);
     }
 
     public String getRuntime() {

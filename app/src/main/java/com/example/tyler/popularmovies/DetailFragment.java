@@ -29,8 +29,8 @@ public class DetailFragment extends Fragment implements FetchMovieDetailTask.Det
     private TextView runtimeView;
     private ListView trailerList;
     private ListView reviewList;
-    private ArrayAdapter<String> trailerAdpt;
-    private ArrayAdapter<String> reviewAdpt;
+    private TrailerListAdapter trailerAdpt;
+    private ReviewListAdapter reviewAdpt;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -89,7 +89,9 @@ public class DetailFragment extends Fragment implements FetchMovieDetailTask.Det
             View listItem = listAdapter.getView(i, null, listView);
             listItem.measure(0, 0);
             totalHeight += listItem.getMeasuredHeight();
+            Log.d(LOG_TAG, "totalHeight: " + totalHeight);
         }
+        totalHeight += 500;
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
@@ -114,10 +116,12 @@ public class DetailFragment extends Fragment implements FetchMovieDetailTask.Det
         ratingView.setText(getString(R.string.detail_rating, mMovie.getVote_avg()));
         runtimeView.setText(mMovie.getRuntime());
 
-        trailerAdpt = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, mMovie.getTrailerList());
+        String[] trailerArray = mMovie.getTrailerList().toArray(new String[mMovie.getTrailerList().size()]);
+        trailerAdpt = new TrailerListAdapter(getContext(), android.R.layout.activity_list_item, trailerArray);
         trailerList.setAdapter(trailerAdpt);
 
-        reviewAdpt = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, mMovie.getReviewList());
+        String[] reviewArray = mMovie.getReviewList().toArray(new String[mMovie.getReviewList().size()]);
+        reviewAdpt = new ReviewListAdapter(getContext(), android.R.layout.simple_list_item_2, reviewArray);
         reviewList.setAdapter(reviewAdpt);
 
         setListViewHeightBasedOnChildren(trailerList);

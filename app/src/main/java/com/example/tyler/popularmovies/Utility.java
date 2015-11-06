@@ -36,11 +36,4 @@ public class Utility {
     public static String getPosterUrl(String urlEnd) {
         return posterUrl + imgM + urlEnd;
     }
-
-    // Reviews are stored in one string as so: author - content.
-    // That way, I don't need to make an entire class.
-    // This little utility will split it for me, saving some code.
-    public static String[] convertReviewStr(String review) {
-        return review.trim().split("-", 1);
-    }
 }

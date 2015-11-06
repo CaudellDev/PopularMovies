@@ -56,6 +56,7 @@ public class FetchMovieDetailTask extends AsyncTask<String, Void, Movie> {
 
         final String JON_TRAILERS = "trailers";
         final String JON_YOUTUBE = "youtube";
+        final String JON_YT_NAME = "name";
         final String JON_YT_SOURCE = "source";
 
         final String JON_REVIEWS = "reviews";
@@ -75,8 +76,9 @@ public class FetchMovieDetailTask extends AsyncTask<String, Void, Movie> {
 
         for (int i = 0; i < youtubeJsonArray.length(); i++) {
             JSONObject youtubeJsonObj = youtubeJsonArray.getJSONObject(i);
+            String name = youtubeJsonObj.getString(JON_YT_NAME);
             String source = youtubeJsonObj.getString(JON_YT_SOURCE);
-            trailers.add(getYoutubeURL(source));
+            trailers.add(name + " - " + getYoutubeURL(source));
         }
 
         JSONObject reviewsJson = movieJson.getJSONObject(JON_REVIEWS);
