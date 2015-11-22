@@ -30,6 +30,11 @@ public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>
     }
 
     private ArrayList<Movie> getMovieDataFromJson(String movieJsonStr) throws JSONException {
+        // If it can't access the network, it'll be null.
+        // Since it's null, just send an empty ArrayList.
+        if (movieJsonStr == null) {
+            return new ArrayList<>();
+        }
 
         // Json Object Name (JON) for the name/value sets in the movie Json string.
         final String JON_RESULTS = "results";
@@ -41,6 +46,8 @@ public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>
         final String JON_POSTER_PATH = "poster_path";
         final String JON_TITLE = "title";
         final String JON_VOTE_AVERAGE = "vote_average";
+
+        Log.d(LOG_TAG, "movieJsonStr: " + movieJsonStr);
 
         JSONObject movieJson = new JSONObject(movieJsonStr);
         JSONArray movieArray = movieJson.getJSONArray(JON_RESULTS);
@@ -60,6 +67,7 @@ public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>
 
             // Make a movie object and add it to the list of movies.
             Movie movie = new Movie(id, title, poster_path, overview, vote_average, release_date);
+            movie.setFavorite(Utility.isFavorite(mContext, id));
             movies.add(movie);
         }
 

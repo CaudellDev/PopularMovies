@@ -15,16 +15,18 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
 
-        // Get the Movie from the intent, and send it off to the new DetailFragment.
-        Bundle args = new Bundle();
-        args.putParcelable(Movie.PARCEL_TAG, getIntent().getParcelableExtra(Movie.PARCEL_TAG));
+        if (savedInstanceState == null) {
+            // Get the Movie from the intent, and send it off to the new DetailFragment.
+            Bundle args = new Bundle();
+            args.putParcelable(Movie.PARCEL_TAG, getIntent().getParcelableExtra(Movie.PARCEL_TAG));
 
-        fragment = new DetailFragment();
-        fragment.setArguments(args);
+            fragment = new DetailFragment();
+            fragment.setArguments(args);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.movie_detail_container, fragment)
-                .commit();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.movie_detail_container, fragment)
+                    .commit();
+        }
     }
 
     @Override

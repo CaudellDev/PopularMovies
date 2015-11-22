@@ -6,6 +6,12 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
 public class Utility {
 
     private static final String posterUrl = "http://image.tmdb.org/t/p/";
@@ -30,23 +36,40 @@ public class Utility {
         return prefs.getString(context.getString(R.string.sort_pref_key), context.getString(R.string.sort_default)) + ".desc";
     }
 
-    public static String getSort(Context context) {
-        // TODO: Once SettingsActivity is working, pull from there.
-        return context.getString(R.string.sort_default);
+    public static ArrayList<Movie> getFavoritesList(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(FavoritesTask.FAV_NAME, Context.MODE_PRIVATE);
+
+        if (prefs.contains(FavoritesTask.FAV_KEY)) {
+            String movieJSON = prefs.getString(FavoritesTask.FAV_KEY, "");
+
+            Gson gson = new Gson();
+            Type arrayType = new TypeToken<ArrayList<Movie>>(){}.getType();
+            return gson.fromJson(movieJSON, arrayType);
+        }
+
+        return new ArrayList<>();
+    }
+
+    public static boolean isFavorite(Context context, String id) {
+        SharedPreferences prefs = context.getSharedPreferences("favorites_list", 0);
+        return prefs.getBoolean(id, false);
+    }
+
+    public static void setFavorite(Context context, String id, boolean favorite) {
+        SharedPreferences prefs = context.getSharedPreferences("favorites_list", 0);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        if (!favorite) {
+            editor.remove(id);
+        } else {
+            editor.putBoolean(id, true);
+        }
+
+        editor.commit();
     }
 
     public static String getPosterUrl(String urlEnd) {
         return posterUrl + imgM + urlEnd;
-    }
-
-    public static String getYoutubeURL(String source) {
-        final String BASE_URL = "vnd.youtube:";
-
-        Uri uri = Uri.parse(BASE_URL).buildUpon()
-                .appendPath(source)
-                .build();
-
-        return uri.toString();
     }
 
     public static String getYoutubeLink(String source) {
@@ -54,7 +77,7 @@ public class Utility {
         final String VIDEO_PARAM = "v";
 
         Uri uri = Uri.parse(BASE_URL).buildUpon()
-                .appendQueryParameter(VIDEO_PARAM, source)
+                .appendQueryParameter(VIDEO_PARAM, source.trim())
                 .build();
 
         Log.v("Utility", "source: " + source);

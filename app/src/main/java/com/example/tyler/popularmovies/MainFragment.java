@@ -1,5 +1,7 @@
 package com.example.tyler.popularmovies;
 
+import android.os.AsyncTask;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,12 +17,16 @@ import java.util.ArrayList;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class MainFragment extends Fragment implements FetchMovieListTask.ListTaskCallback {
+public class MainFragment extends Fragment implements FetchMovieListTask.ListTaskCallback, FavoritesTask.TaskCompleteCallback {
 
     private static final String LOG_TAG = MainFragment.class.getSimpleName();
+    private static final String MOVIE_LIST = "movie_list";
 
+    private ArrayList<Movie> movies;
     private MovieAdapter mMovieAdapter;
     private GridView mGridView;
+    private FavoritesTask favoritesTask;
+    private String sortPref;
 
     public MainFragment() {
     }
@@ -28,7 +34,18 @@ public class MainFragment extends Fragment implements FetchMovieListTask.ListTas
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(MOVIE_LIST)) {
+            movies = savedInstanceState.getParcelableArrayList(MOVIE_LIST);
+        }
+
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(MOVIE_LIST, movies);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -49,38 +66,69 @@ public class MainFragment extends Fragment implements FetchMovieListTask.ListTas
         // Temporary refresh button.
         if (id == R.id.action_refresh) {
             updateMovies();
+        } else if (id == R.id.action_clear_fav) {
+            if (favoritesTask == null) {
+                favoritesTask = new FavoritesTask(getContext(), FavoritesTask.CLEAR, this);
+            }
+
+            if (favoritesTask.getStatus() != AsyncTask.Status.RUNNING) {
+                favoritesTask.execute();
+            }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
     public void updateMovies() {
-        FetchMovieListTask fetchMovieListTask = new FetchMovieListTask(getContext(), this);
+        sortPref = Utility.getPreferredSort(getContext());
+        Log.d(LOG_TAG, "Sort Preference: " + sortPref);
 
-        String sort = Utility.getPreferredSort(getContext());
-        Log.d(LOG_TAG, "Sort Preference: " + sort);
+        if (sortPref.equals("favorites.desc")) {
+            movies = Utility.getFavoritesList(getContext());
+            if (mMovieAdapter == null) {
+                initMovieAdapter(movies);
+            } else {
+                mMovieAdapter.clear();
+                mMovieAdapter.addAll(movies);
+                mMovieAdapter.notifyDataSetChanged();
+            }
+        } else {
+            FetchMovieListTask fetchMovieListTask = new FetchMovieListTask(getContext(), this);
+            fetchMovieListTask.execute(sortPref);
+        }
 
-        fetchMovieListTask.execute(sort);
     }
 
+    private void initMovieAdapter(final ArrayList<Movie> movies) {
+        mMovieAdapter = new MovieAdapter(getContext(), R.layout.image_item, movies);
+        mGridView.setAdapter(mMovieAdapter);
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ((FragmentCallback) getActivity()).onItemClick(movies.get(position));
+            }
+        });
+    }
+
+    // FetchMovieListTask
     @Override
-    public void onTaskComplete(final ArrayList<Movie> movies) {
+    public void onTaskComplete(ArrayList<Movie> movies) {
+        this.movies = movies;
         if (mMovieAdapter == null) {
             // If it's null, it's the first time using it so we need to do some initializing.
-            mMovieAdapter = new MovieAdapter(getContext(), R.layout.image_item, movies);
-            mGridView.setAdapter(mMovieAdapter);
-            mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    ((FragmentCallback) getActivity()).onItemClick(movies.get(position));
-                }
-            });
+            initMovieAdapter(movies);
         } else {
             mMovieAdapter.clear();
             mMovieAdapter.addAll(movies);
         }
 
         mMovieAdapter.notifyDataSetChanged();
+    }
+
+    // FavoritesTask
+    @Override
+    public void onTaskComplete() {
+        updateMovies();
     }
 
     public interface FragmentCallback {
