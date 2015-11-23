@@ -50,6 +50,14 @@ public class Utility {
         return new ArrayList<>();
     }
 
+    public static void clearFavorites(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("favorites_list", 0);
+        SharedPreferences.Editor editor = prefs.edit();
+
+        editor.clear();
+        editor.commit();
+    }
+
     public static boolean isFavorite(Context context, String id) {
         SharedPreferences prefs = context.getSharedPreferences("favorites_list", 0);
         return prefs.getBoolean(id, false);

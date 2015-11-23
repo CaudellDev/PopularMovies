@@ -67,7 +67,7 @@ public class MainFragment extends Fragment implements FetchMovieListTask.ListTas
         if (id == R.id.action_refresh) {
             updateMovies();
         } else if (id == R.id.action_clear_fav) {
-            if (favoritesTask == null) {
+            if (favoritesTask == null || favoritesTask.getStatus() == AsyncTask.Status.FINISHED) {
                 favoritesTask = new FavoritesTask(getContext(), FavoritesTask.CLEAR, this);
             }
 

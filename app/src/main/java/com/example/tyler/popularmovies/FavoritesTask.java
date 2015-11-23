@@ -76,7 +76,6 @@ public class FavoritesTask extends AsyncTask<ArrayList<Movie>, Void, Void> {
 
                     editor.putString(FAV_KEY, movieJSON);
                 }
-                editor.commit();
                 break;
             case REMOVE:
                 Movie remove = movies.get(0);
@@ -89,16 +88,17 @@ public class FavoritesTask extends AsyncTask<ArrayList<Movie>, Void, Void> {
 
                     editor.putString(FAV_KEY, movieJSON);
                 }
-                editor.commit();
                 break;
             case CLEAR:
                 editor.clear();
-                editor.apply();
+                Utility.clearFavorites(mContext);
                 break;
             case EMPTY:
             default:
                 Log.w(LOG_TAG, "Action \"" + mAction + "\" not recognized.");
         }
+
+        editor.commit();
 
         return null;
     }
