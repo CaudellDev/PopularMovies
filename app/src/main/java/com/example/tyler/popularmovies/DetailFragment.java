@@ -65,8 +65,6 @@ public class DetailFragment
         // MainActivity and DetailActivity should add via arguments.
         if (getArguments() != null) {
             mMovie = getArguments().getParcelable(Movie.PARCEL_TAG);
-        } else {
-            Log.d(LOG_TAG, "getArguments() == null");
         }
 
         FetchMovieDetailTask fetchTask = new FetchMovieDetailTask(getContext(), mMovie, this);
@@ -116,9 +114,6 @@ public class DetailFragment
             View listItem = listAdapter.getView(i, null, listView);
             listItem.measure(0, 0);
             totalHeight += listItem.getMeasuredHeight();
-//            Log.d(LOG_TAG, "totalHeight: " + totalHeight);
-//            Log.d(LOG_TAG, "listItem.getMeasuredHeight(): " + listItem.getMeasuredHeight());
-//            Log.d(LOG_TAG, "listItem.getHeight(): " + listItem.getHeight());
         }
 
         ViewGroup.LayoutParams params = listView.getLayoutParams();
@@ -160,7 +155,6 @@ public class DetailFragment
                 try {
                     startActivity(intent);
                 } catch (ActivityNotFoundException e) {
-                    Log.w(LOG_TAG, "Activity not found exception.");
                     e.printStackTrace();
                 }
             }
@@ -188,7 +182,6 @@ public class DetailFragment
             // If someone pushes the button really fast, this will keep it from
             // having multiple tasks at once. Hopefully...
             if (favoritesTask != null && favoritesTask.getStatus() == AsyncTask.Status.RUNNING) {
-                Log.v(LOG_TAG, "favoritesTask is still running.");
                 return;
             }
 

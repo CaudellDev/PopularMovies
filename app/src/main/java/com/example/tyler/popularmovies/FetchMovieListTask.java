@@ -47,8 +47,6 @@ public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>
         final String JON_TITLE = "title";
         final String JON_VOTE_AVERAGE = "vote_average";
 
-        Log.d(LOG_TAG, "movieJsonStr: " + movieJsonStr);
-
         JSONObject movieJson = new JSONObject(movieJsonStr);
         JSONArray movieArray = movieJson.getJSONArray(JON_RESULTS);
 
@@ -98,7 +96,6 @@ public class FetchMovieListTask extends AsyncTask<String, Void, ArrayList<Movie>
 
             // Convert to URL and attempt to connect to it.
             URL url = new URL(builtUri.toString());
-            Log.d(LOG_TAG, "URL: " + builtUri.toString());
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");

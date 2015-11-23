@@ -88,9 +88,6 @@ public class Utility {
                 .appendQueryParameter(VIDEO_PARAM, source.trim())
                 .build();
 
-        Log.v("Utility", "source: " + source);
-        Log.v("Utility", "uri.toString(): " + uri.toString());
-
         return uri.toString();
     }
 }

@@ -60,8 +60,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                                 ? listPreference.getEntries()[index]
                                 : null);
 
-            } else {
-                Log.d(LOG_TAG, "Preference is not instance of List Preference.");
             }
 
             return true;

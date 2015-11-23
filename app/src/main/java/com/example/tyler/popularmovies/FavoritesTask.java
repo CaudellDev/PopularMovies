@@ -35,14 +35,11 @@ public class FavoritesTask extends AsyncTask<ArrayList<Movie>, Void, Void> {
 
     @Override
     protected void onPreExecute() {
-        Log.v(LOG_TAG, "FavoritesTask: onPreExecute() started.");
         super.onPreExecute();
     }
 
     @Override
     protected Void doInBackground(ArrayList<Movie>... params) {
-        Log.v(LOG_TAG, "FavoritesTask: doInBackground() started.");
-
         SharedPreferences prefs = mContext.getSharedPreferences(FAV_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         ArrayList<Movie> movies = (params.length != 0) ? params[0] : null; // Just in case there are no parameters...
@@ -54,12 +51,10 @@ public class FavoritesTask extends AsyncTask<ArrayList<Movie>, Void, Void> {
 
         if (prefs.contains(FAV_KEY)) {
             favoritesJSON = prefs.getString(FAV_KEY, "");
-            Log.d(LOG_TAG, "Favorites are saved: " + favoritesJSON);
 
             Type typeToken = new TypeToken<ArrayList<Movie>>(){}.getType();
             savedMovies = gson.fromJson(favoritesJSON, typeToken);
         } else {
-            Log.d(LOG_TAG, "No favorites saved yet.");
             savedMovies = new ArrayList<>();
         }
 
@@ -71,8 +66,6 @@ public class FavoritesTask extends AsyncTask<ArrayList<Movie>, Void, Void> {
                     Utility.setFavorite(mContext, add.getId(), true);
                     savedMovies.add(add);
                     movieJSON = gson.toJson(savedMovies);
-                    Log.d(LOG_TAG, "new movie json string: " + movieJSON);
-                    Log.d(LOG_TAG, "savedMovies.size(): " + savedMovies.size());
 
                     editor.putString(FAV_KEY, movieJSON);
                 }
@@ -84,7 +77,6 @@ public class FavoritesTask extends AsyncTask<ArrayList<Movie>, Void, Void> {
                     Utility.setFavorite(mContext, remove.getId(), false);
                     savedMovies.remove(remove);
                     movieJSON = gson.toJson(savedMovies);
-                    Log.d(LOG_TAG, "new movie json string: " + movieJSON);
 
                     editor.putString(FAV_KEY, movieJSON);
                 }
@@ -105,7 +97,6 @@ public class FavoritesTask extends AsyncTask<ArrayList<Movie>, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        Log.v(LOG_TAG, "FavoritesTask: onPostExecute() started.");
         mCallback.onTaskComplete();
     }
 

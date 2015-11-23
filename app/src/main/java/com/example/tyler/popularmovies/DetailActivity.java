@@ -31,7 +31,6 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Log.d(LOG_TAG, "onBackPressed() is called.");
         super.onBackPressed();
     }
 }

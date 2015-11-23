@@ -81,7 +81,6 @@ public class MainFragment extends Fragment implements FetchMovieListTask.ListTas
 
     public void updateMovies() {
         sortPref = Utility.getPreferredSort(getContext());
-        Log.d(LOG_TAG, "Sort Preference: " + sortPref);
 
         if (sortPref.equals("favorites.desc")) {
             movies = Utility.getFavoritesList(getContext());

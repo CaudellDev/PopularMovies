@@ -105,7 +105,6 @@ public class FetchMovieDetailTask extends AsyncTask<String, Void, Movie> {
             String movie_id = params[0];
             String api_key = Utility.getKey(mContext);
             String append_param = "trailers,reviews";
-            Log.d(LOG_TAG, "append_param: " + append_param);
 
             // Build the URI with our parameters.
             Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
@@ -116,7 +115,6 @@ public class FetchMovieDetailTask extends AsyncTask<String, Void, Movie> {
 
             // Convert to URL and attempt to connect to it.
             URL url = new URL(builtUri.toString());
-            Log.d(LOG_TAG, "URL: " + builtUri.toString());
 
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");

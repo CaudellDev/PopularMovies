@@ -69,8 +69,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d(LOG_TAG, "onActivityResult is called. Request code: " + requestCode);
-        Log.d(LOG_TAG, "onActivityResult is called. Result code: " + resultCode);
         if (requestCode == PREF_CHANGE_REQUEST) {
             if (resultCode == RESULT_OK) {
                 MainFragment fragment = (MainFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
