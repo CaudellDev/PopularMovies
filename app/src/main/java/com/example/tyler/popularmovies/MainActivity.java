@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
         // If the layout is using sw600dp, it'll have R.id.movie_detail_container.
         if (findViewById(R.id.movie_detail_container) != null) {
             mSavedInsStateNull = savedInstanceState == null;
-            Log.v(LOG_TAG, "(onCreate) mSavedInsStateNull = " + mSavedInsStateNull);
             mTwoPane = true;
         } else {
             mTwoPane = false;
@@ -44,8 +43,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-//        mSavedInsStateNull = false;
-        Log.v(LOG_TAG, "(onSaveInstanceState) mSavedInsStateNull = " + mSavedInsStateNull);
         super.onSaveInstanceState(outState, outPersistentState);
     }
 
@@ -106,8 +103,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.movie_detail_container, fragment, DETAILFRAGMENT_TAG)
                         .commit();
-//                mSavedInsStateNull = false;
-                Log.v(LOG_TAG, "(onFetchTaskComplete) mSavedInsStateNull = " + mSavedInsStateNull);
             }
         }
     }
