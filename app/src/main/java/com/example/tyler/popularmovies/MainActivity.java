@@ -2,6 +2,7 @@ package com.example.tyler.popularmovies;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
     private boolean mTwoPane;
+    private boolean mSavedInsStateNull;
     private static final int PREF_CHANGE_REQUEST = 1;
 
     @Override
@@ -31,18 +33,20 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
 
         // If the layout is using sw600dp, it'll have R.id.movie_detail_container.
         if (findViewById(R.id.movie_detail_container) != null) {
+            mSavedInsStateNull = savedInstanceState == null;
+            Log.v(LOG_TAG, "(onCreate) mSavedInsStateNull = " + mSavedInsStateNull);
             mTwoPane = true;
-
-            // If savedInstanceState is not null, let Android restore the Fragment.
-            if (savedInstanceState == null) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.movie_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
-                        .commit();
-            }
         } else {
             mTwoPane = false;
             getSupportActionBar().setElevation(0f);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+//        mSavedInsStateNull = false;
+        Log.v(LOG_TAG, "(onSaveInstanceState) mSavedInsStateNull = " + mSavedInsStateNull);
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     @Override
@@ -82,11 +86,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
         // MainFragment can't decide how to handle different
         // screen sizes, so let MainActivity to that for us.
         if (mTwoPane) {
-            Bundle args = new Bundle();
-            args.putParcelable(Movie.PARCEL_TAG, movie);
-
-            DetailFragment fragment = new DetailFragment();
-            fragment.setArguments(args);
+            DetailFragment fragment = Utility.getDetailFragWithArgs(movie, true);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.movie_detail_container, fragment)
@@ -95,6 +95,20 @@ public class MainActivity extends AppCompatActivity implements MainFragment.Frag
             Intent intent = new Intent(this, DetailActivity.class)
                     .putExtra(Movie.PARCEL_TAG, movie);
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onFetchTaskComplete(Movie defaultMovie) {
+        if (mTwoPane && mSavedInsStateNull) {
+            if (defaultMovie != null) {
+                DetailFragment fragment = Utility.getDetailFragWithArgs(defaultMovie, true);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.movie_detail_container, fragment, DETAILFRAGMENT_TAG)
+                        .commit();
+//                mSavedInsStateNull = false;
+                Log.v(LOG_TAG, "(onFetchTaskComplete) mSavedInsStateNull = " + mSavedInsStateNull);
+            }
         }
     }
 }

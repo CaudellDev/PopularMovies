@@ -3,6 +3,7 @@ package com.example.tyler.popularmovies;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -89,5 +90,16 @@ public class Utility {
                 .build();
 
         return uri.toString();
+    }
+
+    public static DetailFragment getDetailFragWithArgs(Movie movie, boolean isTwoPane) {
+        Bundle args = new Bundle();
+        args.putParcelable(Movie.PARCEL_TAG, movie);
+        args.putBoolean(DetailFragment.PARCEL_TAG, isTwoPane);
+
+        DetailFragment fragment = new DetailFragment();
+        fragment.setArguments(args);
+
+        return fragment;
     }
 }

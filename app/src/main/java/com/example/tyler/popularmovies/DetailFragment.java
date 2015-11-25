@@ -32,6 +32,7 @@ public class DetailFragment
             FavoritesTask.TaskCompleteCallback {
 
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
+    public static final String PARCEL_TAG = "two_panel_tag";
 
     private boolean mTwoPanel;
     private Movie mMovie;
@@ -51,7 +52,6 @@ public class DetailFragment
     private FavoritesTask favoritesTask;
 
     public DetailFragment() {
-        // Required empty public constructor
     }
 
     @Override
@@ -67,11 +67,10 @@ public class DetailFragment
             mMovie = getArguments().getParcelable(Movie.PARCEL_TAG);
         }
 
-        FetchMovieDetailTask fetchTask = new FetchMovieDetailTask(getContext(), mMovie, this);
-        fetchTask.execute(mMovie.getId());
+        if (!mTwoPanel) {
+            fetchCurrMovie();
+        }
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,6 +87,24 @@ public class DetailFragment
         reviewList = (ListView) rootView.findViewById(R.id.detail_review_list);
 
         return rootView;
+    }
+
+    public void isTwoPane(boolean isTwoPane) {
+        mTwoPanel = isTwoPane;
+    }
+
+    public void listLoaded(Movie currMovie) {
+        // This is only relevent for tablets that
+        // will use the Two Panel interface.
+        if (mTwoPanel) {
+            this.mMovie = currMovie;
+            fetchCurrMovie();
+        }
+    }
+
+    public void fetchCurrMovie() {
+        FetchMovieDetailTask fetchTask = new FetchMovieDetailTask(getContext(), mMovie, this);
+        fetchTask.execute(mMovie.getId());
     }
 
     /**

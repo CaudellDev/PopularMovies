@@ -21,6 +21,7 @@ public class MainFragment extends Fragment implements FetchMovieListTask.ListTas
 
     private static final String LOG_TAG = MainFragment.class.getSimpleName();
     private static final String MOVIE_LIST = "movie_list";
+    private static final int defaultMovieInd = 0;
 
     private ArrayList<Movie> movies;
     private MovieAdapter mMovieAdapter;
@@ -84,13 +85,7 @@ public class MainFragment extends Fragment implements FetchMovieListTask.ListTas
 
         if (sortPref.equals("favorites.desc")) {
             movies = Utility.getFavoritesList(getContext());
-            if (mMovieAdapter == null) {
-                initMovieAdapter(movies);
-            } else {
-                mMovieAdapter.clear();
-                mMovieAdapter.addAll(movies);
-                mMovieAdapter.notifyDataSetChanged();
-            }
+            onTaskComplete(movies);
         } else {
             FetchMovieListTask fetchMovieListTask = new FetchMovieListTask(getContext(), this);
             fetchMovieListTask.execute(sortPref);
@@ -122,6 +117,9 @@ public class MainFragment extends Fragment implements FetchMovieListTask.ListTas
         }
 
         mMovieAdapter.notifyDataSetChanged();
+
+        Movie movie = this.movies.isEmpty() ? null : this.movies.get(0);
+        ((FragmentCallback) getActivity()).onFetchTaskComplete(movie);
     }
 
     // FavoritesTask
@@ -132,5 +130,6 @@ public class MainFragment extends Fragment implements FetchMovieListTask.ListTas
 
     public interface FragmentCallback {
         void onItemClick(Movie movie);
+        void onFetchTaskComplete(Movie defaultMovie);
     }
 }

@@ -17,11 +17,7 @@ public class DetailActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             // Get the Movie from the intent, and send it off to the new DetailFragment.
-            Bundle args = new Bundle();
-            args.putParcelable(Movie.PARCEL_TAG, getIntent().getParcelableExtra(Movie.PARCEL_TAG));
-
-            fragment = new DetailFragment();
-            fragment.setArguments(args);
+            fragment = Utility.getDetailFragWithArgs((Movie) getIntent().getParcelableExtra(Movie.PARCEL_TAG), false);
 
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.movie_detail_container, fragment)
